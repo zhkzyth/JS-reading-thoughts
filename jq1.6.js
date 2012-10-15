@@ -358,7 +358,7 @@ jQuery.extend = jQuery.fn.extend = function() {
             copy = options[ name ];
 
             // Prevent never-ending loop
-            if ( target === copy ) {
+            if ( target === copy ) {   //防止循环引用的出现
                continue;
             }
 
@@ -376,7 +376,7 @@ jQuery.extend = jQuery.fn.extend = function() {
                target[ name ] = jQuery.extend( deep, clone, copy );
 
             // Don't bring in undefined values
-            } else if ( copy !== undefined ) {
+            } else if ( copy !== undefined ) {  //递归循环的终止条件
                target[ name ] = copy;
             }
          }
@@ -1770,7 +1770,7 @@ function isEmptyDataObject( obj ) {
 
 
 
-
+//?
 function handleQueueMarkDefer( elem, type, src ) {
    var deferDataKey = type + "defer",
       queueDataKey = type + "queue",
@@ -1883,10 +1883,10 @@ jQuery.fn.extend({
          return jQuery.queue( this[0], type );
       }
       return this.each(function() {
-         var queue = jQuery.queue( this, type, data );
+         var queue = jQuery.queue( this, type, data );   //set每个元素的queue之后，马上就执行队列中第一个元素，为什么
 
          if ( type === "fx" && queue[0] !== "inprogress" ) {
-            jQuery.dequeue( this, type );
+            jQuery.dequeue( this, type ); //为什么要马上执行呢？
          }
       });
    },
@@ -1908,6 +1908,7 @@ jQuery.fn.extend({
          }, time );
       });
    },
+   //清空队列，人为的塞入一个空数组就可以了
    clearQueue: function( type ) {
       return this.queue( type || "fx", [] );
    },
@@ -8184,6 +8185,7 @@ jQuery.fn.extend({
                .animate({opacity: to}, speed, easing, callback);
    },
 
+   //http://www.iteye.com/topic/786984 前辈分析的动画函数
    animate: function( prop, speed, easing, callback ) {
       var optall = jQuery.speed(speed, easing, callback);
 
@@ -8199,7 +8201,8 @@ jQuery.fn.extend({
          // test suite
 
          if ( optall.queue === false ) {
-            jQuery._mark( this );
+            //给动画元素标记，标示还有多少动画没执行
+            jQuery._mark( this );   //_mark?
          }
 
          var opt = jQuery.extend( {}, optall ),
@@ -8212,6 +8215,7 @@ jQuery.fn.extend({
          // will store per property easing and be used to determine when an animation is complete
          opt.animatedProperties = {};
 
+         //遍历每个动画属性
          for ( p in prop ) {
 
             // property name normalization
@@ -8225,7 +8229,9 @@ jQuery.fn.extend({
 
             // easing resolution: per property > opt.specialEasing > opt.easing > 'swing' (default)
             if ( jQuery.isArray( val ) ) {
-               opt.animatedProperties[ name ] = val[ 1 ];
+               // 可以给某个属性单独定制动画算法.
+               //例如$("#div1").animate({"left":["+=100px", "swing"], 1000},
+               opt.animatedProperties[ name ] = val[ 1 ];      //api文档没写，但应该可以支持数组指定特定元素的属性和动画
                val = prop[ name ] = val[ 0 ];
             } else {
                opt.animatedProperties[ name ] = opt.specialEasing && opt.specialEasing[ name ] || opt.easing || 'swing';
@@ -8286,7 +8292,7 @@ jQuery.fn.extend({
                   end = parseFloat( parts[2] );
                   unit = parts[3] || ( jQuery.cssNumber[ p ] ? "" : "px" );
 
-                  // We need to compute starting value
+                  // We need to compute starting values ????
                   if ( unit !== "px" ) {
                      jQuery.style( this, p, (end || 1) + unit);
                      start = ((end || 1) / e.cur()) * start;
@@ -8328,6 +8334,7 @@ jQuery.fn.extend({
                if (gotoEnd) {
                   // force the next step to be the last
                   timers[i](true);
+                  //调用一次fx.step(true),转到动画执完成的状态
                }
 
                timers.splice(i, 1);
@@ -8381,12 +8388,13 @@ jQuery.each({
 });
 
 jQuery.extend({
+   //动画函数的参数修正
    speed: function( speed, easing, fn ) {
       var opt = speed && typeof speed === "object" ? jQuery.extend({}, speed) : {
          complete: fn || !fn && easing ||
             jQuery.isFunction( speed ) && speed,
          duration: speed,
-         easing: fn && easing || easing && !jQuery.isFunction(easing) && easing
+         easing: fn && easing || easing && !jQuery.isFunction(easing) && easing //这里的匹配规则有点奇怪
       };
 
       opt.duration = jQuery.fx.off ? 0 : typeof opt.duration === "number" ? opt.duration :
@@ -8396,12 +8404,13 @@ jQuery.extend({
       opt.old = opt.complete;
       opt.complete = function( noUnmark ) {
          if ( jQuery.isFunction( opt.old ) ) {
-            opt.old.call( this );
+            opt.old.call( this );      //
          }
 
+         //执行队列里面的下一个动画
          if ( opt.queue !== false ) {
             jQuery.dequeue( this );
-         } else if ( noUnmark !== false ) {
+         } else if ( noUnmark !== false ) {     //?
             jQuery._unmark( this );
          }
       };
@@ -8424,7 +8433,7 @@ jQuery.extend({
       this.options = options;
       this.elem = elem;
       this.prop = prop;
-
+      //还会给每个对象实例绑定orig属性, 默认是一个空对象{}.用来储存元素的属性原始值, 有了这个值, 可以让动画进行回退.
       options.orig = options.orig || {};
    }
 
@@ -8465,13 +8474,16 @@ jQuery.fx.prototype = {
       this.unit = unit || this.unit || ( jQuery.cssNumber[ this.prop ] ? "" : "px" );
       this.now = this.start;
       this.pos = this.state = 0;
-
+      //get more detail:http://www.iteye.com/topic/786984
       function t( gotoEnd ) {
          return self.step(gotoEnd);
       }
 
-      t.elem = this.elem;
-
+      //一个包裹动画具体执行函数的闭包, 之所以要用闭包包裹起来,
+      //是因为执行动画的动作并不一定是发生在当前.
+        t.elem = this.elem;
+      //保存一个元素的引用. 删除和判断is:animated的时候用到,
+      //把timer和元素联系起来
       if ( t() && jQuery.timers.push(t) && !timerId ) {
          timerId = setInterval( fx.tick, fx.interval );
       }
@@ -8486,6 +8498,7 @@ jQuery.fx.prototype = {
       // Begin the animation
       // Make sure that we start at a small width/height to avoid any
       // flash of content
+      //把width和height设置为一个很小的值, 防止屏幕闪烁.
       this.custom(this.prop === "width" || this.prop === "height" ? 1 : 0, this.cur());
 
       // Start by showing the element
@@ -8597,6 +8610,7 @@ jQuery.extend( jQuery.fx, {
       _default: 400
    },
 
+   //扩展的是动画类的静态方法
    step: {
       opacity: function( fx ) {
          jQuery.style( fx.elem, "opacity", fx.now );
