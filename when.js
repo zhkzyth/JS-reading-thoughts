@@ -86,7 +86,7 @@ define(function() {
                 if(i in arr)
                     {
                         reduced = reduceFunc(reduced, arr[i], i, arr);
-                    }  //è¿™é‡Œå˜æˆè°ƒç”¨4ä¸ªäº†ï¼Œè€Œä¸”æœ€åä¼ å…¥çš„æ˜¯arræ•°ç»„
+                    }  //ÕâÀï±ä³Éµ÷ÓÃ4¸öÁË£¬¶øÇÒ×îºó´«ÈëµÄÊÇarrÊı×é
             }
 
             return reduced;
@@ -143,12 +143,12 @@ define(function() {
                 if (arg != null && typeof arg != 'function') throw new Error('callback is not a function');
             }
 
-            deferred = defer();     //deferredå¯¹è±¡ä¸€ç›´éƒ½æ˜¯è°ƒç”¨ä½œç”¨é“¾ä¸Šçš„
+            deferred = defer();     //deferred¶ÔÏóÒ»Ö±¶¼ÊÇµ÷ÓÃ×÷ÓÃÁ´ÉÏµÄ
 
             // console.log(deferred);
 
-            listeners.push({            //è®¢é˜…äº‹ä»¶æ˜¯åœ¨è¿™é‡Œå®Œæˆçš„......coolï¼Œæ‹¿çš„æ˜¯ä¸Šä¸€ä¸ªpromiseçš„listener...ä¸ºä»€ä¹ˆï¼Ÿ
-                deferred: deferred,     //æ¯æ¬¡éƒ½ç”Ÿæˆä¸€ä¸ªæ–°çš„deferredå¯¹è±¡
+            listeners.push({            //¶©ÔÄÊÂ¼şÊÇÔÚÕâÀïÍê³ÉµÄ......cool£¬ÄÃµÄÊÇÉÏÒ»¸öpromiseµÄlistener...ÎªÊ²Ã´£¿
+                deferred: deferred,     //Ã¿´Î¶¼Éú³ÉÒ»¸öĞÂµÄdeferred¶ÔÏó
                 resolve: callback,
                 reject: errback
             });
@@ -158,7 +158,7 @@ define(function() {
             progback && progressHandlers.push(progback);
 
 
-            return deferred.promise;//è¿”å›è‡ªèº«ï¼Œä»¥ä¾¿é“¾å¼è°ƒç”¨
+            return deferred.promise;//·µ»Ø×ÔÉí£¬ÒÔ±ãÁ´Ê½µ÷ÓÃ
         };
 
         /**
@@ -232,16 +232,16 @@ define(function() {
          * @param which {String} either "resolve" or "reject"
          * @param val anything resolution value or rejection reason
          */
-        complete = function(which, val) {      //thenç»‘å®šå®Œåï¼Œcontrolleré‚£è¾¹å°±å¼€å§‹completeäº†ï¼Œè€Œç¬¬ä¸€æ¬¡è°ƒç”¨ä¼šè¿›æ¥è¿™é‡Œ
+        complete = function(which, val) {      //then°ó¶¨Íêºó£¬controllerÄÇ±ß¾Í¿ªÊ¼completeÁË£¬¶øµÚÒ»´Îµ÷ÓÃ»á½øÀ´ÕâÀï
             // Save original _then
             var origThen = _then;
 
             // Replace _then with one that immediately notifies
             // with the result.
-            _then = function newThen(callback, errback) {           //åªè¦resolveè¿‡ä¸€æ¬¡ï¼Œé‚£ä¹ˆåç»­çš„thenç»‘å®šéƒ½ç›´æ¥èµ°è¿™é‡Œçš„thenï¼Œè€Œä¸”æ˜¯é©¬ä¸Šè§¦å‘
+            _then = function newThen(callback, errback) {           //Ö»Òªresolve¹ıÒ»´Î£¬ÄÇÃ´ºóĞøµÄthen°ó¶¨¶¼Ö±½Ó×ßÕâÀïµÄthen£¬¶øÇÒÊÇÂíÉÏ´¥·¢
                 // console.log("should not be shown");
                 var promise = origThen(callback, errback);
-                notify(which);  //åç»­çš„thenè°ƒç”¨éƒ½èµ°è¿™é‡Œäº†ï¼Œæ¯è°ƒç”¨ä¸€æ¬¡thenï¼Œéƒ½notifyè®¢é˜…è€…???
+                notify(which);  //ºóĞøµÄthenµ÷ÓÃ¶¼×ßÕâÀïÁË£¬Ã¿µ÷ÓÃÒ»´Îthen£¬¶¼notify¶©ÔÄÕß???
                 return promise;
             };
 
@@ -286,17 +286,17 @@ define(function() {
             // below could run async, so need to ensure that no callers can corrupt
             // the array we're iterating over, but also need to allow callers to register
             // new listeners.
-            localListeners = listeners; //è¿™é‡Œçš„listeneråªæœ‰ä¸€ä¸ªå•Š....
+            localListeners = listeners; //ÕâÀïµÄlistenerÖ»ÓĞÒ»¸ö°¡....
             // console.log(localListeners);
             listeners = [];
 
-            while (listener = localListeners[i++]) {    //å¦‚æœå‡ºç°rejectï¼Œä½†åç»­çš„listeneræ­»æ‰äº†ï¼Œè¿™é‡Œå°±ç†„ç­äº†ï¼Ÿ
+            while (listener = localListeners[i++]) {    //Èç¹û³öÏÖreject£¬µ«ºóĞøµÄlistenerËÀµôÁË£¬ÕâÀï¾ÍÏ¨ÃğÁË£¿
                 ldeferred = listener.deferred;
                 handler = listener[which];
 
                 try {
 
-                    newResult = handler ? handler(result) : result; //è¿”å›ç¬¬ä¸€æ¬¡æ‰§è¡Œçš„å€¼æœ¬èº«ï¼Œæˆ–è€…è¿”å›å½“å‰å‡½æ•°å¤„ç†åçš„å€¼
+                    newResult = handler ? handler(result) : result; //·µ»ØµÚÒ»´ÎÖ´ĞĞµÄÖµ±¾Éí£¬»òÕß·µ»Øµ±Ç°º¯Êı´¦ÀíºóµÄÖµ
 
                     // NOTE: isPromise is also called by promise(), which is called by when(),
                     // resulting in 2 calls to isPromise here.  It's harmless, but need to
@@ -308,7 +308,7 @@ define(function() {
 
                     } else {
                         // Complete deferred from chained then()
-                        //è·‘å®Œchainåˆ—è¡¨ä¸Šé¢æ³¨å†Œçš„å‡½æ•°
+                        //ÅÜÍêchainÁĞ±íÉÏÃæ×¢²áµÄº¯Êı
                         // FIXME: Which is correct?
                         // The first always mutates the chained value, even if it is undefined
                         // The second will only mutate if newResult !== undefined
@@ -318,7 +318,7 @@ define(function() {
                     }
                 } catch (e) {
                     // Exceptions cause chained deferreds to reject
-                    //å¦‚æœå…¶ä¸­ä¸€ç¯å‡ºé”™äº†ï¼Œæ•´ä¸ªchainé“¾è¡¨å°±å¾€rejectçš„æ–¹å‘èµ°
+                    //Èç¹ûÆäÖĞÒ»»·³ö´íÁË£¬Õû¸öchainÁ´±í¾ÍÍùrejectµÄ·½Ïò×ß
                     ldeferred.reject(e);//cool
                 }
             }
@@ -365,7 +365,7 @@ define(function() {
          * @name resolver
          * @type {Resolver}
          */
-            deferred.resolver = freeze({    //resolveræ˜¯æŒ‚åœ¨deferredä¸‹é¢çš„ï¼Œæä¾›ç»™å¤–éƒ¨3ä¸ªapiæ¥å£
+            deferred.resolver = freeze({    //resolverÊÇ¹ÒÔÚdeferredÏÂÃæµÄ£¬Ìá¹©¸øÍâ²¿3¸öapi½Ó¿Ú
                 resolve:  (deferred.resolve  = resolve),
                 reject:   (deferred.reject   = reject),
                 progress: (deferred.progress = progress)
@@ -410,17 +410,17 @@ define(function() {
     function when(promiseOrValue, callback, errback, progressHandler) {
         // Get a promise for the input promiseOrValue
         // See promise()
-        //å°†ç¬¬ä¸‰æ–¹çš„promiseåŒ…è£…æˆæˆ‘ä»¬è‡ªå·±çš„ï¼Œåªè¦å¯¹æ–¹æ»¡è¶³æˆåŠŸæ—¶è°ƒç”¨æˆ‘ä»¬çš„resolveæ–¹æ³•å°±å¥½äº†
+        //½«µÚÈı·½µÄpromise°ü×°³ÉÎÒÃÇ×Ô¼ºµÄ£¬Ö»Òª¶Ô·½Âú×ã³É¹¦Ê±µ÷ÓÃÎÒÃÇµÄresolve·½·¨¾ÍºÃÁË
         var trustedPromise = promise(promiseOrValue);
 
-        //ç„¶åé©¬ä¸Šæ³¨å†Œæˆ‘ä»¬è‡ªå·±çš„æ–¹æ³•åˆ°æˆ‘ä»¬è‡ªå·±çš„deferrå¯¹è±¡ä¸Š
+        //È»ºóÂíÉÏ×¢²áÎÒÃÇ×Ô¼ºµÄ·½·¨µ½ÎÒÃÇ×Ô¼ºµÄdeferr¶ÔÏóÉÏ
         // Register promise handlers
-        return trustedPromise.then(callback, errback, progressHandler);     //è¿™ä¸ªæ˜¯æˆ‘ä»¬è‡ªå·±çš„promise
+        return trustedPromise.then(callback, errback, progressHandler);     //Õâ¸öÊÇÎÒÃÇ×Ô¼ºµÄpromise
 
-        //whenè¿™ä¸ªæ–¹æ³•å®ç°å¾—å¾ˆå·§å¦™ï¼Œåœ¨promiseæ–¹æ³•é‡Œé¢ï¼Œå› ä¸ºæˆ‘ä»¬ä¸èƒ½ä¿¡ä»»ç¬¬ä¸‰æ–¹çš„promiseï¼Œ
-        //æ‰€ä»¥æˆ‘ä»¬å°±æŠŠè‡ªå·±çš„defferå¡åˆ°è¿™ä¸ªè‡ªç§°å®ç°äº†thenæ–¹æ³•çš„promiseã€‚ç„¶åè¿”å›è‡ªå·±ä¿¡ä»»çš„deffer
-        //ç„¶åï¼Œæˆ‘ä»¬è‡ªå·±è¦ç»‘å®šçš„æ–¹æ³•ç»‘å®šåˆ°defferé‡Œé¢ã€‚
-        //è¿™æ ·ï¼Œå½“æ–¹æ³•æˆåŠŸè°ƒç”¨çš„æ—¶å€™ï¼Œæˆ‘ä»¬ç»‘å®šçš„æ–¹æ³•å°±å­˜åœ¨listeneré‡Œé¢äº†ï¼Œå¯ä»¥è¿›è¡Œè°ƒç”¨äº†ã€‚
+        //whenÕâ¸ö·½·¨ÊµÏÖµÃºÜÇÉÃî£¬ÔÚpromise·½·¨ÀïÃæ£¬ÒòÎªÎÒÃÇ²»ÄÜĞÅÈÎµÚÈı·½µÄpromise£¬
+        //ËùÒÔÎÒÃÇ¾Í°Ñ×Ô¼ºµÄdefferÈûµ½Õâ¸ö×Ô³ÆÊµÏÖÁËthen·½·¨µÄpromise¡£È»ºó·µ»Ø×Ô¼ºĞÅÈÎµÄdeffer
+        //È»ºó£¬ÎÒÃÇ×Ô¼ºÒª°ó¶¨µÄ·½·¨°ó¶¨µ½defferÀïÃæ¡£
+        //ÕâÑù£¬µ±·½·¨³É¹¦µ÷ÓÃµÄÊ±ºò£¬ÎÒÃÇ°ó¶¨µÄ·½·¨¾Í´æÔÚlistenerÀïÃæÁË£¬¿ÉÒÔ½øĞĞµ÷ÓÃÁË¡£
     }
 
     /**
@@ -444,7 +444,7 @@ define(function() {
     function promise(promiseOrValue) {
         var promise, deferred;
 
-        if(promiseOrValue instanceof Promise) { //å¦‚æœæ˜¯æˆ‘ä»¬è‡ªå·±ç”Ÿæˆçš„ï¼Œé‚£å°±æ˜¯å¯ä»¥ä¿¡ä»»çš„promise
+        if(promiseOrValue instanceof Promise) { //Èç¹ûÊÇÎÒÃÇ×Ô¼ºÉú³ÉµÄ£¬ÄÇ¾ÍÊÇ¿ÉÒÔĞÅÈÎµÄpromise
             // It's a when.js promise, so we trust it
             promise = promiseOrValue;
 
@@ -454,19 +454,19 @@ define(function() {
             deferred = defer();
 
             if(isPromise(promiseOrValue)) {
-                //è™½ç„¶è¿™ä¸ªpromiseå£°æ˜è‡ªå·±æ˜¯ä¸ªpromiseç±»å‹çš„ï¼Œä½†æˆ‘ä»¬ä»ç„¶ä¸æ”¾å¿ƒå‘=.=
+                //ËäÈ»Õâ¸öpromiseÉùÃ÷×Ô¼ºÊÇ¸öpromiseÀàĞÍµÄ£¬µ«ÎÒÃÇÈÔÈ»²»·ÅĞÄÄÅ=.=
                 // It's a compliant promise, but we don't know where it came from,
                 // so we don't trust its implementation entirely.  Introduce a trusted
                 // middleman when.js promise
 
                 // IMPORTANT: This is the only place when.js should ever call .then() on
                 // an untrusted promise.
-                //TODO åŠ å¤šäº†ä¸€å±‚æœ‰ä»€ä¹ˆç”¨å‘¢?
-                //æŠŠæˆ‘ä»¬è‡ªå·±çš„å…¼å®¹å®ç°æ”¾åˆ°è¿™ä¸ªpromiseçš„ç¬¬ä¸€å±‚é‡Œé¢
-                //ä½†è¿™æ ·èƒ½ä¿è¯ä»¥åçš„thenå®ç°å—ï¼Ÿ
-                //A:ä»¥åäº§ç”Ÿpromiseå¯¹è±¡éƒ½æ˜¯åˆç¬¦è§„èŒƒçš„promiseå¯¹è±¡äº†ï¼Œäº§ç”Ÿè‡ªwhenJsçš„deferræ–¹æ³•
-                promiseOrValue.then(deferred.resolve, deferred.reject, deferred.progress);  //å½“ç„¶ä¹Ÿè¦æ³¨å†Œ
-                //æˆ‘ä»¬åšä¸ºè°ƒç”¨è€…ï¼Œåªéœ€è¦ç¡®å®šå®ƒæˆåŠŸçš„æ—¶å€™èƒ½è°ƒç”¨æˆ‘ä»¬çš„resolveæ–¹æ³•å°±å¯ä»¥äº†
+                //TODO ¼Ó¶àÁËÒ»²ãÓĞÊ²Ã´ÓÃÄØ?
+                //°ÑÎÒÃÇ×Ô¼ºµÄ¼æÈİÊµÏÖ·Åµ½Õâ¸öpromiseµÄµÚÒ»²ãÀïÃæ
+                //µ«ÕâÑùÄÜ±£Ö¤ÒÔºóµÄthenÊµÏÖÂğ£¿
+                //A:ÒÔºó²úÉúpromise¶ÔÏó¶¼ÊÇºÏ·û¹æ·¶µÄpromise¶ÔÏóÁË£¬²úÉú×ÔwhenJsµÄdeferr·½·¨
+                promiseOrValue.then(deferred.resolve, deferred.reject, deferred.progress);  //µ±È»Ò²Òª×¢²á
+                //ÎÒÃÇ×öÎªµ÷ÓÃÕß£¬Ö»ĞèÒªÈ·¶¨Ëü³É¹¦µÄÊ±ºòÄÜµ÷ÓÃÎÒÃÇµÄresolve·½·¨¾Í¿ÉÒÔÁË
 
             } else {
                 // It's a value, not a promise.  Create an already-resolved promise
@@ -475,7 +475,7 @@ define(function() {
 
             }
 
-            promise = deferred.promise;     //è¿”å›æˆ‘ä»¬è‡ªå·±çš„promiseï¼Ÿ
+            promise = deferred.promise;     //·µ»ØÎÒÃÇ×Ô¼ºµÄpromise£¿
         }
 
         return promise;
@@ -588,12 +588,12 @@ define(function() {
     function all(promisesOrValues, callback, errback, progressHandler) {
         var results, promise;
 
-        results = allocateArray(promisesOrValues.length);   //åˆ†é…ä¸€ä¸ªç©ºæ•°ç»„
-        promise = reduce(promisesOrValues, reduceIntoArray, results);   //è¿”å›æ‰¿è¯ºï¼Œæˆ‘åªè¦æ‰¿è¯º
+        results = allocateArray(promisesOrValues.length);   //·ÖÅäÒ»¸ö¿ÕÊı×é
+        promise = reduce(promisesOrValues, reduceIntoArray, results);   //·µ»Ø³ĞÅµ£¬ÎÒÖ»Òª³ĞÅµ
 
-        //è¿”å›çš„æ˜¯æœ€åä¸€ä¸ªæ‰¿è¯ºäº†ï¼Œå½“å®ƒå®Œæˆçš„æ—¶å€™ï¼Œä¹Ÿå°±æ˜¯æ•´ä¸ªæ•°ç»„å¯ä»¥ç”¨çš„æ—¶å€™äº†~~~
+        //·µ»ØµÄÊÇ×îºóÒ»¸ö³ĞÅµÁË£¬µ±ËüÍê³ÉµÄÊ±ºò£¬Ò²¾ÍÊÇÕû¸öÊı×é¿ÉÒÔÓÃµÄÊ±ºòÁË~~~
         //cool!!!
-        return when(promise, callback, errback, progressHandler);//ç»™æœ€åä¸€ä¸ªæ‰¿è¯ºèµ‹äºˆå®ƒçš„è´£ä»»ï¼Œ^_^
+        return when(promise, callback, errback, progressHandler);//¸ø×îºóÒ»¸ö³ĞÅµ¸³ÓèËüµÄÔğÈÎ£¬^_^
     }
 
     function reduceIntoArray(current, val, i) {
@@ -661,7 +661,7 @@ define(function() {
         // of size len instead of just 1.  Since all() uses reduce()
         // anyway, avoid the additional allocation by calling reduce
         // directly.
-        return reduce(results, reduceIntoArray, results);   //ç›´æ¥è¦†ç›–åŸæ•°ç»„äº†....cool
+        return reduce(results, reduceIntoArray, results);   //Ö±½Ó¸²¸ÇÔ­Êı×éÁË....cool
     }
 
     /**
@@ -681,7 +681,7 @@ define(function() {
      *
      * @returns {Promise} that will resolve to the final reduced value
      */
-    function reduce(promisesOrValues, reduceFunc, initialValue) {       //å¯¹[].reduceåšè‡ªå·±çš„å°è£…ï¼Œé’ˆå¯¹promiseå¯¹è±¡
+    function reduce(promisesOrValues, reduceFunc, initialValue) {       //¶Ô[].reduce×ö×Ô¼ºµÄ·â×°£¬Õë¶Ôpromise¶ÔÏó
 
         var total, args;
 
@@ -696,18 +696,18 @@ define(function() {
         args = [
         //i see the time~~they just store here....cool
             function (current, val, i) {      //function(previousValue, currentValue, index, array){
-                return when(current, function (c) { //ä»è¿™é‡Œçœ‹å‡ºï¼Œæ•°ç»„ä¸­çš„promiseè°ƒç”¨è¿˜æ˜¯æœ‰å…ˆåå…³ç³»çš„ï¼Œä¸²è¡Œäº†ï¼Ÿ
+                return when(current, function (c) { //´ÓÕâÀï¿´³ö£¬Êı×éÖĞµÄpromiseµ÷ÓÃ»¹ÊÇÓĞÏÈºó¹ØÏµµÄ£¬´®ĞĞÁË£¿
                     return when(val, function (value) {
-                        return reduceFunc(c, value, i, total);      //è¿™é‡Œçš„reduceFuncå’Œæ ‡å‡†çš„å®ç°ä¸å¤ªä¸€æ ·
+                        return reduceFunc(c, value, i, total);      //ÕâÀïµÄreduceFuncºÍ±ê×¼µÄÊµÏÖ²»Ì«Ò»Ñù
                     });
                 });
             }
-            //å®ƒå°±æ˜¯ä¸€ä¸ªå¯¹promiseå¯¹è±¡åšå¤„ç†çš„å‡½æ•°ï¼Œæ¯æ¬¡è°ƒç”¨è¿”å›ä¸€ä¸ªä¼šå®ç°çš„æ‰¿è¯ºpromise
+            //Ëü¾ÍÊÇÒ»¸ö¶Ôpromise¶ÔÏó×ö´¦ÀíµÄº¯Êı£¬Ã¿´Îµ÷ÓÃ·µ»ØÒ»¸ö»áÊµÏÖµÄ³ĞÅµpromise
         ];
 
         if (arguments.length >= 3) args.push(initialValue);
-        //æŠŠæ‰€æœ‰çš„æ‰¿è¯ºæ”¾åœ¨ä¸€ä¸ªæ•°ç»„é‡Œé¢ï¼Œä¹‹é—´ä¸å­˜åœ¨å…ˆåå…³ç³»?
-        //è¿™é‡Œæš‚æ—¶çœ‹ä¸æ‡‚...å…ˆæ”¾ç€
+        //°ÑËùÓĞµÄ³ĞÅµ·ÅÔÚÒ»¸öÊı×éÀïÃæ£¬Ö®¼ä²»´æÔÚÏÈºó¹ØÏµ?
+        //ÕâÀïÔİÊ±¿´²»¶®...ÏÈ·Å×Å
         // array.reduce(callback[, initialValue])
         return promise(reduceArray.apply(promisesOrValues, args));
     }
