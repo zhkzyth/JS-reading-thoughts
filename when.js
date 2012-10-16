@@ -475,7 +475,7 @@ define(function() {
 
             }
 
-            promise = deferred.promise;     //返回我们自己的promise？
+            promise = deferred.prom发ise;     //返回我们自己的promise？
         }
 
         return promise;

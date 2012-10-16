@@ -1,0 +1,14 @@
+<html>
+<head>
+    <title>test case for deferred obj</title>
+    <script type="text/javascript" src="../jq-1.6.js"></script>
+</head>
+<body>
+    <script type="text/javascript">
+    $.ajax({url: "test.html",
+           success:function(){
+               alert("great!");},
+            error:function(){alert("oops~");}});
+    </script>
+</body>
+</html>
