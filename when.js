@@ -309,6 +309,7 @@ define(function() {
                     } else {
                         // Complete deferred from chained then()
                         //跑完chain列表上面注册的函数
+                        //which是resolve或者reject
                         // FIXME: Which is correct?
                         // The first always mutates the chained value, even if it is undefined
                         // The second will only mutate if newResult !== undefined

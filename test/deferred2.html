@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="../jq-1.6.js"></script>
+</head>
+<body>
+
+ <button>Go</button>
+ <p>Ready...</p>
+
+<script>
+// var defer = $.Deferred(),
+//     filtered = defer.pipe(function( value ) {
+//       return value * 2;
+//     });
+
+// defer.resolve( 5 );
+// filtered.done(function( value ) {
+//   alert( "Value is ( 2*5 = ) 10: " + value );
+// });
+
+
+// var defer = $.Deferred(),
+//     filtered = defer.pipe( null, function( value ) {
+//       return value * 3;
+//     });
+
+// defer.reject( 6 );
+// filtered.fail(function( value ) {
+//   alert( "Value is ( 3*6 = ) 18: " + value );
+// });
+
+url = "test1.html",url2="test.html";
+
+var request = $.ajax( url, { dataType: "json" } );
+
+chained = request.pipe(function( data ) {
+      return $.ajax( url2, { data: {} } );
+    });
+
+chained.done(function( data ) {
+      console.log("test");
+});
+
+chained.fail(function  (argument) {
+   return "abcd";
+});
+
+
+</script>
+
+</body>
+</html>

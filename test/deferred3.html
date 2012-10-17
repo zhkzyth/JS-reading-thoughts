@@ -1,0 +1,110 @@
+
+
+<!DOCTYPE html>
+
+
+
+<html>
+
+<head>
+
+    <title>Deferred.pipe() for Animation</title>
+
+    <style type="text/css">
+
+        #c1 { height: 80px; }
+
+        #c1 div
+
+        {
+
+            display: none; width: 200px; height: 20px; text-align: center;
+
+            margin: 5px; background-color: #dddddd; color: blue;
+
+        }
+
+        #container div
+
+        {
+
+            width: 300px; padding: 5px; text-align: center; display: none;
+
+            margin: 5px; border: 1px solid gray; background-color: #80ddf0;
+
+        }
+
+    </style>
+    <script type="text/javascript" src="../jq-1.6.js"></script>
+    <script type="text/javascript">
+        $(function () {
+
+
+
+            //Ref: https://gist.github.com/1026351
+
+            $.Deferred(function (dfr) {
+
+                dfr
+
+                .pipe(function () {
+                    return $('.first').fadeIn();
+                })
+
+                .pipe(function () {
+                    return $('.second').fadeIn(); })
+
+                .pipe(function () { return $('.third').fadeIn(); })
+
+            }).resolve();
+
+            // Using Loop
+
+            $.Deferred(function (dfr) {
+
+                $("#container > div").each(function () {
+
+                    var $div = $(this);
+
+                    dfr.then(function () { return $div.fadeIn(); });
+
+                });
+
+            }).resolve();
+
+        });
+
+    </script>
+
+</head>
+
+<body>
+
+<div id='c1'>
+
+    <div class="first">First</div>
+
+    <div class="second">Second</div>
+
+    <div class="third">Third</div>
+
+</div>
+
+<div id='container'>
+
+    <div>First</div>
+
+    <div>Second</div>
+
+    <div>Third</div>
+
+    <div>Forth</div>
+
+    <div>Fifth</div>
+
+</div>
+
+</body>
+
+</html>
+
