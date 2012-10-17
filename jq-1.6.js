@@ -1128,6 +1128,7 @@ jQuery.extend({
       function resolveFunc( i ) {
          return function( value ) {
             args[ i ] = arguments.length > 1 ? sliceDeferred.call( arguments, 0 ) : value;
+            // console.log(args);
             if ( !( --count ) ) {
                // Strange bug in FF4:
                // Values changed onto the arguments object sometimes end up as undefined values

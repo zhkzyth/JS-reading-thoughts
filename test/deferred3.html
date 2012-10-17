@@ -74,6 +74,19 @@
 
         });
 
+        //really cool
+        $.when( {a:"123"} ).then(function(ajaxArgs){
+             alert(ajaxArgs["a"]); /* ajaxArgs is [ "success", statusText, jqXHR ] */
+        });
+
+        $.when($.ajax("test.html"), $.ajax("test1.html")).done(function(a1,  a2){
+            /* a1 and a2 are arguments resolved for the
+                page1 and page2 ajax requests, respectively */
+           var jqXHR = a1[2]; /* arguments are [ "success", statusText, jqXHR ] */
+           // if ( /Whip It/.test(jqXHR.responseText) ) {
+              alert("First page has 'Whip It' somewhere.");
+           // }
+        })
     </script>
 
 </head>

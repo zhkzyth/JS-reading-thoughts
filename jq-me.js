@@ -1002,7 +1002,7 @@
                   return this;
                },
 
-               //
+               //TODO 了解下JQ的ajax方法实现，看看人家的封装是怎么做的
                chainCallbacks:function  (callbacks,context,args) {
                   if (callbacks[0]) {
                      promiseOrValue = callbacks.shift().apply(context,args);
@@ -1192,13 +1192,16 @@
       },
 
       // Deferred helper
+      //$.when($.ajax("/page1.php"), $.ajax("/page2.php"))
+      // .then(myFunc, myFailure);
+      //写得真TMD的漂亮啊，ghost.....
       when: function(firstParam) {
 
          var args = arguments,
             i = 0,
             length = args.length,
             count = length,
-            //如果第一个是deferred对象就使用，否则生成一个新的deferred对象
+            //如果第一个是deferred对象就使用，否则生成一个新的deferred对象，做为master的deferr对象使用
             deferred = length <= 1 && firstParam && jQuery.isFunction(firstParam.promise) ? firstParam : jQuery.Deferred();
 
 
@@ -1206,16 +1209,18 @@
             return function(value) {
                //动态改变值了？
                args[i] = arguments.length > 1 ? sliceDeferred.call(arguments, 0) : value;
+               console.log(args[i]);
                if(!(--count)) {
                   // Strange bug in FF4:
                   // Values changed onto the arguments object sometimes end up as undefined values
                   // outside the $.when method. Cloning the object into a fresh array solves the issue
+                  //master deferr　has been resolved,so we can call the callbacks funk nonw...
                   deferred.resolveWith(deferred, sliceDeferred.call(args, 0));
                }
             };
          }
 
-
+         //传入多个deferr对象
          if(length > 1) {
             for(; i < length; i++) {
                if(args[i] && jQuery.isFunction(args[i].promise)) {
@@ -1224,12 +1229,14 @@
                   --count;
                }
             }
+            //所有的when(deferrList)都已经跑完，可以resolve掉master deferr了
             if(!count) {
                deferred.resolveWith(deferred, args);
             }
          } else if(deferred !== firstParam) {
             deferred.resolveWith(deferred, length ? [firstParam] : []);
          }
+
          return deferred.promise();
       }
 
