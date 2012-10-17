@@ -955,10 +955,10 @@
 
    jQuery.extend({
       //a promise gen helper func
-      _promise:function  (promiseOrValue) {
+      // _promise:function  (promiseOrValue) {
          //i need a callback list and a then func to bind the nex deferr
          //and what????????
-      },
+      // },
       // Create a simple deferred (one callbacks list)
       // _Deferred本无成功状态或失败状态，有四种状态：初始化、执行中、执行完毕、已取消
       _Deferred: function() {
@@ -1006,7 +1006,7 @@
                chainCallbacks:function  (callbacks,context,args) {
                   if (callbacks[0]) {
                      promiseOrValue = callbacks.shift().apply(context,args);
-                     promise = jQuery._promise(promiseOrValue);
+                     // promise = jQuery._promise(promiseOrValue);
 
                      // // if ( typeof promiseOrValue.promise === 'function' ) {
                      // nextDeferr = jQuery.Deferred(function(newDefer) {
@@ -1032,9 +1032,23 @@
                resolveWith: function(context, args) {
                   if(!cancelled && !fired && !firing) {
                      // make sure args are available (#8421)
-                     var lPromise;
                      args = args || [];
                      firing = 1;
+
+                     $.Deferred(function (dfr) {
+                        // count = callbacks.length;
+
+                        for(;callbacks.length;){
+                           returned = callbacks.shift().apply(context,args);
+
+                           dfr.promise(returned);
+
+                           dfr.pipe(returned);
+                        }
+                        //ok,so how can wen make the final state????
+
+                     }).resolve();
+
                      // try {
                      //    while(callbacks[0]) {
                            // callbacks.shift().apply(context, args);
@@ -1045,12 +1059,7 @@
                      //    firing = 0;
                      // }
                   // }
-                  //
-                     lPromise = chainCallbacks(callbacks,context,args);
-                     lPromise.then(function (argument) {
-                        fired = [context,args];
-                        firing = 0;
-                     });
+
                   }
 
                   //用来链式调用
@@ -6655,7 +6664,7 @@
    }
 
 
-
+   //JQ内部的全局变量
    var r20 = /%20/g,
       rbracket = /\[\]$/,
       rCRLF = /\r?\n/g,
@@ -6800,7 +6809,7 @@
    // that takes "flat" options (not to be deep extended)
    // Fixes #9887
 
-
+   //对ajaxSetting进行设计
    function ajaxExtend(target, src) {
       var key, deep, flatOptions = jQuery.ajaxSettings.flatOptions || {};
       for(key in src) {
@@ -6853,13 +6862,13 @@
          jQuery.ajax({
             url: url,
             type: type,
-            dataType: "html",
+            dataType: "html",//??
             data: params,
             // Complete callback (responseText is used internally)
             complete: function(jqXHR, status, responseText) {
                // Store the response as specified by the jqXHR object
                responseText = jqXHR.responseText;
-               // If successful, inject the HTML into all the matched elements
+               // If successful, Inject the HTML into all the matched elements
                if(jqXHR.isResolved()) {
                   // #4825: Get the actual response in case
                   // a dataFilter is present in ajaxSettings
@@ -6911,7 +6920,7 @@
                name: elem.name,
                value: val.replace(rCRLF, "\r\n")
             };
-         }).get();
+         }).get();//修改成数组形式
       }
    });
 
@@ -7654,6 +7663,7 @@
    });
 
    // Detect, normalize options and install callbacks for jsonp requests
+   //调用实例：return function(dataTypeExpression, func) {
    jQuery.ajaxPrefilter("json jsonp", function(s, originalSettings, jqXHR) {
 
       var inspectData = s.contentType === "application/x-www-form-urlencoded" && (typeof s.data === "string");

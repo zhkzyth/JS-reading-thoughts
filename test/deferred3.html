@@ -66,7 +66,9 @@
 
                     var $div = $(this);
 
-                    dfr.then(function () { return $div.fadeIn(); });
+                    // console.log(typeof $div.fadeIn().promise);
+
+                    dfr.pipe(function () { return $div.fadeIn(); });
 
                 });
 
