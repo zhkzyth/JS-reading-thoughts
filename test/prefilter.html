@@ -1,0 +1,89 @@
+<html>
+<head>
+</head>
+<body>
+  <script type="text/javascript" src="../jq-1.6.js"></script>
+
+  <div id="div3">
+    <p>div3. Some initial text.</p>
+  </div>
+<p><input type="button" value="btn7: Using $.ajaxPrefilter( settings )" id="btn7" style="font-size: 0.8em;"><input type="button" value="btn8: Using $.ajaxPrefilter( settings )" id="btn8" style="font-size: 0.8em;"></p>
+
+  <script type="text/javascript">
+$(function() {
+  $('#btn7').one('click', function() {
+    $.ajaxSetup({
+      specialUser: false
+    });
+    checkUser();
+  });
+  $('#btn8').one('click', function() {
+    $.ajaxSetup({
+      specialUser: true
+    });
+    checkUser();
+  });
+
+  function checkUser() {
+    returnedPromise = userRequest();
+    /*
+     * Here we can check our returned promise which we mapped
+     * from our Ajax request and if done is a special user.
+     */
+    returnedPromise.done(function() {
+      $('#div3').append('Special user! <br />');
+    });
+  }
+
+  function userRequest() {
+
+    var ourDeferred = new $.Deferred();
+    var userPromise = ourDeferred.promise();
+
+    $.ajaxPrefilter(function(settings, localSettings, jqXHR) {
+      if(settings.specialUser) {
+        $('#div3').append('Special user setting exist! <br />');
+        localSettings.url="test2.js";
+        // console.log(localSettings);
+      } else {
+        // console.log("test");
+        $('#div3').append('No special user setting, abort! <br />');
+        jqXHR.abort();
+      }
+    });
+
+    var suc = function  () {
+      console.log(arguments);
+      console.log("suc function");
+    }
+
+    suc.name = "peter";
+
+    var jqxhr = $.ajax({
+      type: "GET",
+      // url: "test.js",
+      url:"https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js",
+      dataType: "script",
+      // success:function  (argument) {
+      //   console.log("well done");
+      // }
+      success:suc
+      // zhkzyth:"it's a happy data~~~~"
+    });
+
+    jqxhr.done(function(data, status, xhr) {
+      $('#div3').append('Special user with prefilter, so resolve the deferred! <br />');
+      ourDeferred.resolve();
+    });
+    jqxhr.fail(function(jqXHR, status, error) {
+      $('#div3').append('Error with Ajax request! ' + status + error + '  <br />');
+      ourDeferred.reject();
+    });
+    // Return the jqXHR Promise object
+    return userPromise;
+  }
+
+});
+  </script>
+</body>
+</html>

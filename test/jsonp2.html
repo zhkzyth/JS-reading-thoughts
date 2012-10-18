@@ -1,0 +1,19 @@
+<html>
+   <head>
+      <title>Twitter 2.0</title>
+      <script type="text/javascript" src="../jq-1.6.js"></script>
+   </head>
+<body>
+<div id='tweet-list'></div>
+<script type="text/javascript">
+$(document).ready(function() {
+    var url =  "http://api.twitter.com/1/statuses/user_timeline/codinghorror.json";
+    $.getJSON(url + "?callback=?", null, function(tweets) {
+        for(i in tweets) {
+            tweet = tweets[i];
+            $("#tweet-list").append(tweet.text + "<hr />");
+        }
+    });
+});
+</script>
+</body></html>

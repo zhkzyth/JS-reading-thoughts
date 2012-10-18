@@ -1,0 +1,102 @@
+<html>
+   <head>
+      <script type="text/javascript" src="../jq-1.6.js"></script>
+   </head>
+   <body>
+      <!-- <button class="do_not_click"></button> -->
+      <input type="button" class="do_not_click">
+
+      <script type="text/javascript">
+      // (function  ($) {
+      //    var sub$ = $.sub();
+
+      //    sub$.fn.myCustomMethod = function () {
+      //       console.log('just for me');
+      //    }
+
+      //    sub$(document).ready(function (){
+      //       sub$('body').myCustomMethod();
+      //    });
+      // })(jQuery);
+
+      // typeof jQuery('body').myCustomMethod();
+      </script>
+      <script type="text/javascript">
+      // //重写JQ上面的方法
+      //    var sub$ = $.sub();
+
+      //    sub$.fn.zhkzyth=  function  (argument) {
+      //    }
+
+      //    sub$.fn.remove = function(){
+      //       //trigger a remove event
+      //       this.trigger("remove");//冒泡到document节点
+
+      //       //call original jQuery method
+      //       return jQuery.fn.remove.apply(this,arguments);
+      //    }
+
+      //       $('.do_not_click').click(function () {
+      //          sub$(this).remove();
+      //       });
+
+      //       // console.log(sub$(this));
+
+      //       $(document).bind("remove",function (e) {
+      //          console.log("test");
+      //          alert("great");
+      //       })
+      </script>
+      <script type="text/javascript">
+      //basic code sample
+      // (function(){
+      //    //
+      //    var plugin = jQuery.sub();
+
+      //    //
+      //    plugin.fn.extend({...});
+
+      //    //
+      //    jQuery.fn.myplugin = function(){
+      //       return plugin(this);
+      //    };
+      // })();
+
+      //full code sample
+      (function(){
+         //
+         var plugin = jQuery.sub();
+
+         //
+         plugin.fn.extend({
+            open:function  () {
+               return this.show();
+            },
+            close:function () {
+               return this.hide();
+            }
+         });
+
+         //
+         jQuery.fn.myplugin = function(){
+            this.addClass("plugin");
+            //返回一个针对插件的JQ副本
+            return plugin(this);
+         };
+      })();
+
+      //wrong sample
+      $(document).ready(function(){
+         $('#main').open(); //not work
+      })
+
+      //correct sample
+      $(document).ready(function(){
+         //call plugin
+         //open method now exists
+         $('#main').myplugin().open();
+      })
+
+      </script>
+   </body>
+</html>

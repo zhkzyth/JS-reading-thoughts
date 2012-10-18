@@ -1,0 +1,62 @@
+<html>
+  <head>
+    <script type="text/javascript" src="../jq-1.6.js"></script>
+  </head>
+  <body>
+    <script type="text/javascript">
+$.ajaxTransport("image", function(s) {
+
+  console.log("asdasdas");
+
+  if(s.type === "GET" && s.async) {
+
+    var image;
+
+    return {
+
+      send: function(_, callback) {
+
+        image = new Image();
+
+        function done(status) {
+          if(image) {
+            var statusText = (status == 200) ? "success" : "error",
+              tmp = image;
+            image = image.onreadystatechange = image.onerror = image.onload = null;
+            callback(status, statusText, {
+              image: tmp
+            });
+          }
+        }
+
+        image.onreadystatechange = image.onload = function() {
+          done(200);
+        };
+        image.onerror = function() {
+          done(404);
+        };
+
+        image.src = s.url;
+
+        // $(body).appendChild(image);
+      },
+
+      abort: function() {
+        if(image) {
+          image = image.onreadystatechange = image.onerror = image.onload = null;
+        }
+      }
+    };
+  }
+});
+
+$.ajax({
+  url: "images/2.jpg",
+  type:"GET",
+
+  // dataType: 'image'
+});
+
+    </script>
+  </body>
+</html>

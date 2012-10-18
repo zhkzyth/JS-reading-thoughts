@@ -434,7 +434,7 @@ jQuery.extend({
          }
 
          // If there are functions bound, to execute
-         readyList.resolveWith( document, [ jQuery ] );
+         readyList.resolveWith( document, [ jQuery ] );//jquery(fun),fun是接受jquery参数的
 
          // Trigger any bound ready events
          if ( jQuery.fn.trigger ) {
@@ -7685,7 +7685,7 @@ function ajaxConvert( s, response ) {
 
 
 var jsc = jQuery.now(),
-   jsre = /(\=)\?(&|$)|\?\?/i;
+   jsre = /(\=)\?(&|$)|\?\?/i; //??结束，或者=?& 或 =?$ 来结束
 
 // Default jsonp settings
 jQuery.ajaxSetup({
@@ -7700,9 +7700,10 @@ jQuery.ajaxPrefilter( "json jsonp", function( s, originalSettings, jqXHR ) {
 
    var inspectData = s.contentType === "application/x-www-form-urlencoded" &&
       ( typeof s.data === "string" );
-
+   //虽然也对json做prefilter处理，但其实都是为了判断
+   //jsonp的调用，可以对调用者更加友好吧....
    if ( s.dataTypes[ 0 ] === "jsonp" ||
-      s.jsonp !== false && ( jsre.test( s.url ) ||
+      s.jsonp !== false && ( jsre.test( s.url ) ||//url + "?callback=?"
             inspectData && jsre.test( s.data ) ) ) {
 
       var responseContainer,
@@ -7711,7 +7712,7 @@ jQuery.ajaxPrefilter( "json jsonp", function( s, originalSettings, jqXHR ) {
          previous = window[ jsonpCallback ],
          url = s.url,
          data = s.data,
-         replace = "$1" + jsonpCallback + "$2";
+         replace = "$1" + jsonpCallback + "$2"; //jsonpCallback存放的位置应该在哪里呢？
 
       if ( s.jsonp !== false ) {
          url = url.replace( jsre, replace );
@@ -7795,7 +7796,6 @@ jQuery.ajaxTransport( "script", function(s) {
 
    // This transport only deals with cross domain requests
    if ( s.crossDomain ) {
-
       var script,
          head = document.head || document.getElementsByTagName( "head" )[0] || document.documentElement;
 
@@ -7823,7 +7823,7 @@ jQuery.ajaxTransport( "script", function(s) {
 
                   // Remove the script
                   if ( head && script.parentNode ) {
-                     head.removeChild( script );
+                     head.removeChild( script ); // onloda后，删除script节点
                   }
 
                   // Dereference the script
