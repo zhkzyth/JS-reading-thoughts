@@ -7708,12 +7708,15 @@ jQuery.ajaxPrefilter( "json jsonp", function( s, originalSettings, jqXHR ) {
 
       var responseContainer,
          jsonpCallback = s.jsonpCallback =
+         // s.jsonpCallback是函数，则执行函数用返回值做为回调函数名
+         // 如果不是function又会怎么样？
             jQuery.isFunction( s.jsonpCallback ) ? s.jsonpCallback() : s.jsonpCallback,
          previous = window[ jsonpCallback ],
          url = s.url,
          data = s.data,
          replace = "$1" + jsonpCallback + "$2"; //jsonpCallback存放的位置应该在哪里呢？
-
+      //对jsonp的url调整
+      //TODO read the ref:http://nuysoft.iteye.com/blog/1178483
       if ( s.jsonp !== false ) {
          url = url.replace( jsre, replace );
          if ( s.url === url ) {
