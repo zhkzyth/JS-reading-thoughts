@@ -1,0 +1,49 @@
+<html>
+<head>
+   <title>done</title>
+</head>
+<body>
+<script type="text/javascript" src="../../jq-1.6.js"></script>
+<script type="text/javascript">
+
+
+   //实现Deferred
+   $.get("connect.html")
+      .done( function getFile(){ /*console.log("get file");*/ return "file content"; } )
+      .done( function writeBack(){ /*console.log("write back"); console.log(arguments);*/})
+
+   function getFile (argument) {
+      // body...
+      console.log("get file")
+      // return file;
+   }
+
+   function writeBack(arguments){
+      //body...
+      console.log("write back to the server")
+   }
+
+   $.get("connect.html")
+      .done(getFile)
+      .done(writeBack)
+
+
+   //jQuery.get( url [, data] [, success(data, textStatus, jqXHR)] [, dataType] )
+   $.get( "connect.html",function (data,textStatus,jqXHR) {
+         // console.log("connect success")
+         // console.log("let's get the file")
+         $.get("getFile.html",function(data,textStatus,jqXHR){
+            // console.log("get the file")
+            //do some edition
+            // console.log("edit file")
+            // consonle.log("let write back to the server")
+            $.get("writeBack.html",function (data,textStatus,jqXHR) {
+               // consonle.log("write back to the server successful")
+               // console.log("ok ,we have done~");
+            })
+         })
+      })
+
+</script>
+</body>
+</html>

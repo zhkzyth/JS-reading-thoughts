@@ -1,0 +1,21 @@
+<html>
+<head>
+   <title>done</title>
+</head>
+<body>
+<script type="text/javascript" src="../../jq-1.6.js"></script>
+<script type="text/javascript">
+
+   //实现Deferred
+   $.get("../test1.html").done(function() {
+     console.log("$.get succeeded");
+   });
+
+   //jQuery.get( url [, data] [, success(data, textStatus, jqXHR)] [, dataType] )
+   $.get( "../test1.html",function () {
+      console.log("$.get succeeded");
+   })
+
+</script>
+</body>
+</html>

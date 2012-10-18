@@ -1059,6 +1059,7 @@ jQuery.extend({
             return this;
          },
          always: function() {
+            //jqXHR.always(function() {...})
             return deferred.done.apply( deferred, arguments ).fail.apply( this, arguments );
          },
          fail: failDeferred.done,
@@ -6798,7 +6799,7 @@ function inspectPrefiltersOrTransports( structure, options, originalOptions, jqX
       selection;
 
    for(; i < length && ( executeOnly || !selection ); i++ ) {
-      selection = list[ i ]( options, originalOptions, jqXHR );
+      selection = list[ i ]( options, originalOptions, jqXHR );//解恨了=.=
       // If we got redirected to another dataType
       // we try there if executing only and not done already
       if ( typeof selection === "string" ) {
@@ -7087,7 +7088,7 @@ jQuery.extend({
                   jQuery( callbackContext ) : jQuery.event,
          // Deferreds
          deferred = jQuery.Deferred(),
-         completeDeferred = jQuery._Deferred(),
+         completeDeferred = jQuery._Deferred(),//为什么还要创建一个completeDeferred对象呢??
          // Status-dependent callbacks
          statusCode = s.statusCode || {},
          // ifModified key
@@ -7168,7 +7169,7 @@ jQuery.extend({
       // It is defined here because jslint complains if it is declared
       // at the end of the function (which would be more logical and readable)
       function done( status, nativeStatusText, responses, headers ) {
-
+         //complete( status, statusText, responses, responseHeaders );
          // Called once
          if ( state === 2 ) {
             return;
@@ -7251,6 +7252,7 @@ jQuery.extend({
 
          // Success/Error
          if ( isSuccess ) {
+            //
             deferred.resolveWith( callbackContext, [ success, statusText, jqXHR ] );
          } else {
             deferred.rejectWith( callbackContext, [ jqXHR, statusText, error ] );
@@ -7408,7 +7410,7 @@ jQuery.extend({
 
       // Install callbacks on deferreds
       for ( i in { success: 1, error: 1, complete: 1 } ) {
-         jqXHR[ i ]( s[ i ] );
+         jqXHR[ i ]( s[ i ] );//$.ajax{...success:callback...}就是在这个时候挂靠进来的...cool!
       }
 
       // Get transport
@@ -7416,7 +7418,7 @@ jQuery.extend({
 
       // If no transport, we auto-abort
       if ( !transport ) {
-         done( -1, "No Transport" );
+         done( -1, "No Transport" );//done都是给内部用的吗？
       } else {
          jqXHR.readyState = 1;
          // Send global event
@@ -7432,7 +7434,7 @@ jQuery.extend({
 
          try {
             state = 1;
-            transport.send( requestHeaders, done );
+            transport.send( requestHeaders, done );//原来分发器是在这里使用的
          } catch (e) {
             // Propagate exception as error if not done
             if ( state < 2 ) {
@@ -7952,7 +7954,7 @@ if ( jQuery.support.ajax ) {
                   for ( i in headers ) {
                      xhr.setRequestHeader( i, headers[ i ] );
                   }
-               } catch( _ ) {}
+               } catch( _ ) {}//?????
 
                // Do send the request
                // This may raise an exception which is actually
@@ -8029,7 +8031,7 @@ if ( jQuery.support.ajax ) {
                      }
                   } catch( firefoxAccessException ) {
                      if ( !isAbort ) {
-                        complete( -1, firefoxAccessException );
+                        complete( -1, firefoxAccessException );//???
                      }
                   }
 

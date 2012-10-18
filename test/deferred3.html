@@ -68,7 +68,7 @@
 
                     // console.log(typeof $div.fadeIn().promise);
 
-                    dfr.pipe(function () { return $div.fadeIn(); });
+                    dfr.done(function () { return $div.fadeIn(); });
 
                 });
 
