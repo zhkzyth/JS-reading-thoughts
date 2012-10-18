@@ -589,7 +589,7 @@
             }
             return xml;
          },
-
+         //do nothing....
          noop: function() {},
 
          // Evaluates a script in a global context
@@ -6756,7 +6756,7 @@
                if(placeBefore) {
                   dataType = dataType.substr(1) || "*";
                }
-               list = structure[dataType] = structure[dataType] || [];
+               list = structure[dataType] = structure[dataType] || [];//
                // then we add to the structure accordingly
                list[placeBefore ? "unshift" : "push"](func);
             }
@@ -7663,7 +7663,8 @@
    });
 
    // Detect, normalize options and install callbacks for jsonp requests
-   //调用实例：return function(dataTypeExpression, func) {
+   //调用实例：jQuery.ajaxPrefilter( [dataTypes] , handler(options, originalOptions, jqXHR) )
+   //当客户端发起特定类型的ajax请求的时候，调用对应的handler进行options的处理？？
    jQuery.ajaxPrefilter("json jsonp", function(s, originalSettings, jqXHR) {
 
       var inspectData = s.contentType === "application/x-www-form-urlencoded" && (typeof s.data === "string");
@@ -7742,6 +7743,7 @@
    });
 
    // Handle cache's special case and global
+   // ajaxPrefilter: function( dataTypeExpression, func ) {
    jQuery.ajaxPrefilter("script", function(s) {
       if(s.cache === undefined) {
          s.cache = false;
