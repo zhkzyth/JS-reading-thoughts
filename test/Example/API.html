@@ -1,0 +1,49 @@
+<html>
+   <head>
+      <script type="text/javascript" src="../../jq-1.6.js"></script>
+   </head>
+   <body>
+      <script type="text/javascript">
+       //jQuery.Deferrer constructor
+       function () {
+          var deferred = new jQuery.Deferred();
+          //async code
+          return deferred.promise();
+       }
+
+       //jQuery.Deferrer Example
+      $.afterWork = function(time){
+         var deferred = new jQuery.Deferred();
+         setTimeout(deferred.resolve, time);
+         return deferred.promise();
+      }
+
+      //improved one
+      $.afterWork = function(time,shangXian){
+         var deferred = new jQuery.Deferred();
+         if ( shangXian ) {
+            //今天要上线，下班时间不确定了
+            setTimeout(deferred.reject, time);
+         } else{
+            setTimeout(deferred.resolve, time);
+         };
+         return deferred.promise();
+      }
+            //
+      var 8h = 8*60*60*1000;
+      function doneWork(){ console.log("下班啦~~~~"); }
+      function moreWork(){ console.log("=.=...又要加班呐"); }
+      function cook () { console.log("回家买菜，做饭，生活多逍遥"); }
+      function fastFood() { console.log("又要去吃和潍坊了..."); }
+
+      //use case 1
+      $.afterWork(8h,true).done(doneWork).fail(moreWork).done(cook).fail(fastFood);
+
+      //use case 2
+      $.afterWork(8h,true).then(doneWork,moreWork).then(cook,fastFood);
+
+
+
+      </script>
+   </body>
+</html>
