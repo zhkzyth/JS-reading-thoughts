@@ -1,0 +1,29 @@
+{
+    "cssgrids-base": {
+        "optional": [
+            "cssreset",
+            "cssfonts"
+        ], 
+        "type": "css"
+    },
+
+    "cssgrids-units": {
+        "requires": [
+            "cssgrids-base"
+        ],
+
+        "optional": [
+            "cssreset",
+            "cssfonts"
+        ], 
+        "type": "css"
+    },
+
+    "cssgrids": {
+        "optional": [
+            "cssreset",
+            "cssfonts"
+        ], 
+        "type": "css"
+    }
+}

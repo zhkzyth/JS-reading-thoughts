@@ -1,0 +1,32 @@
+{
+    "base": {
+        "use": ["base-base", "base-pluginhost", "base-build"],
+        "submodules": {
+	    "base-core": {
+		"requires": [
+                    "attribute-core"
+                ]
+	    },
+            "base-base": {
+                "requires": [
+                    "base-core",
+                    "attribute-base"
+                ],
+                "after": [
+                    "attribute-complex"
+                ]
+            },
+            "base-build": {
+                "requires": [
+                    "base-base"
+                ]
+            }, 
+            "base-pluginhost": {
+                "requires": [
+                    "base-base", 
+                    "pluginhost"
+                ]
+            }
+        }
+    }
+}

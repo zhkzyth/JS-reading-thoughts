@@ -283,7 +283,7 @@ jQuery.fn = jQuery.prototype = {
 
       return this;
    },
-
+   //array.slice(start, end)
    eq: function( i ) {
       return i === -1 ?
          this.slice( i ) :
@@ -3782,7 +3782,33 @@ jQuery.each( ("blur focus focusin focusout load resize scroll unload click dblcl
  *  More information: http://sizzlejs.com/
  */
 (function(){
+//这个需要对应jQuery的选择器来看，共7种
+//ID选择器，CLASS选择器，TAG选择器，ATTR属性选择器，CHILD子元素选择器，PSEUDO伪类选择器，POS位置选择器
 
+// 选择器表达式： "div > p"
+// 块表达式： "div" "p"
+// 并列选择器表达式： "div, p"
+// 块分割器： Sizzle中的chunker正则，对选择器表达式从左向右分割出一个个块表达式
+// 查找器： 对块表达式进行查找，找到的DOM元素数组叫候选集
+// 过滤器： 对块表达式和候选集进行过滤
+// 关系过滤器： 对块表达式之间的关系进行过滤，共有四种关系："+" 紧挨着的兄弟关系；">" 父子关系；"" 祖先关系；"~" 之后的所有兄弟关系
+// 候选集： 查找器的结果，待过滤器进行过滤
+// 映射集： 候选集的副本，过滤器和关系过滤器对映射集进行过滤
+
+//参考资料：
+//[1] http://www.cnblogs.com/nuysoft/archive/2011/11/23/2260877.html
+//[2] http://www.cnblogs.com/NNUF/archive/2012/07/31/2617084.html
+// var chunker = /(
+//                   (?:\((?:\([^()]+\)|[^()]+)+\)
+//                    |\[(?:\[[^\[\]]*\]|['"][^'"]*['"]|[^\[\]'"]+)+\]
+//                    |\\.
+//                    |[^ >+~,(\[\\]+
+//                   )+
+//                    |[>+~]
+//                )
+//                (\s*,\s*)?
+//                ((?:.|\r|\n)*)
+//                /g,
 var chunker = /((?:\((?:\([^()]+\)|[^()]+)+\)|\[(?:\[[^\[\]]*\]|['"][^'"]*['"]|[^\[\]'"]+)+\]|\\.|[^ >+~,(\[\\]+)+|[>+~])(\s*,\s*)?((?:.|\r|\n)*)/g,
    done = 0,
    toString = Object.prototype.toString,
@@ -3800,6 +3826,7 @@ var chunker = /((?:\((?:\([^()]+\)|[^()]+)+\)|\[(?:\[[^\[\]]*\]|['"][^'"]*['"]|[
    return 0;
 });
 
+//sizzle构造函数？
 var Sizzle = function( selector, context, results, seed ) {
    results = results || [];
    context = context || document;
@@ -3820,10 +3847,11 @@ var Sizzle = function( selector, context, results, seed ) {
       parts = [],
       soFar = selector;
 
-   // Reset the position of the chunker regexp (start from head)
    do {
+      // Reset the position of the chunker regexp (start from head)
       chunker.exec( "" );
-      m = chunker.exec( soFar );
+      m = chunker.exec( soFar ); //从左往右，递归遍历selector，把所有的选择块都抽取出来
+      console.log(m);
 
       if ( m ) {
          soFar = m[3];
@@ -3973,6 +4001,7 @@ Sizzle.matchesSelector = function( node, expr ) {
 };
 
 Sizzle.find = function( expr, context, isXML ) {
+   // console.log("");
    var set;
 
    if ( !expr ) {
@@ -4114,6 +4143,7 @@ var Expr = Sizzle.selectors = {
       TAG: /^((?:[\w\u00c0-\uFFFF\*\-]|\\.)+)/,
       CHILD: /:(only|nth|last|first)-child(?:\(\s*(even|odd|(?:[+\-]?\d+|(?:[+\-]?\d*)?n\s*(?:[+\-]\s*\d+)?))\s*\))?/,
       POS: /:(nth|eq|gt|lt|first|last|even|odd)(?:\((\d*)\))?(?=[^\-]|$)/,
+      //// \u00c0-\uFFFF 匹配多个国家或名族的字母文字
       PSEUDO: /:((?:[\w\u00c0-\uFFFF\-]|\\.)+)(?:\((['"]?)((?:\([^\)]+\)|[^\(\)]*)+)\2\))?/
    },
 
@@ -4846,6 +4876,8 @@ Sizzle.getText = function( elems ) {
    div.appendChild( document.createComment("") );
 
    // Make sure no comments are found
+   //检测当前浏览器是否会把comment节点也当做*选择器匹配的结果集
+   //如果是的话，就重构下这个方法TAG方法
    if ( div.getElementsByTagName("*").length > 0 ) {
       Expr.find.TAG = function( match, context ) {
          var results = context.getElementsByTagName( match[1] );
@@ -4874,6 +4906,8 @@ Sizzle.getText = function( elems ) {
          div.firstChild.getAttribute("href") !== "#" ) {
 
       Expr.attrHandle.href = function( elem ) {
+         //API没这样调用吧....
+         //elementNode.getAttribute(name)
          return elem.getAttribute( "href", 2 );
       };
    }
@@ -4882,6 +4916,7 @@ Sizzle.getText = function( elems ) {
    div = null;
 })();
 
+//兼容旧版的sizzle，复制旧版的sizzle属性和方法
 if ( document.querySelectorAll ) {
    (function(){
       var oldSizzle = Sizzle,
@@ -4990,6 +5025,7 @@ if ( document.querySelectorAll ) {
    })();
 }
 
+//实现matchesSelector方法
 (function(){
    var html = document.documentElement,
       matches = html.matchesSelector || html.mozMatchesSelector || html.webkitMatchesSelector || html.msMatchesSelector;
@@ -5034,6 +5070,7 @@ if ( document.querySelectorAll ) {
    }
 })();
 
+//匿名函数完成getElementByClassName的特性检测
 (function(){
    var div = document.createElement("div");
 
@@ -5051,7 +5088,7 @@ if ( document.querySelectorAll ) {
    if ( div.getElementsByClassName("e").length === 1 ) {
       return;
    }
-
+   //如果浏览器支持class查找元素，就增加class到查找顺序队列里面
    Expr.order.splice(1, 0, "CLASS");
    Expr.find.CLASS = function( match, context, isXML ) {
       if ( typeof context.getElementsByClassName !== "undefined" && !isXML ) {
@@ -5138,6 +5175,7 @@ function dirCheck( dir, cur, doneName, checkSet, nodeCheck, isXML ) {
 }
 
 if ( document.documentElement.contains ) {
+   //觉得实现上有点问题
    Sizzle.contains = function( a, b ) {
       return a !== b && (a.contains ? a.contains(b) : true);
    };
@@ -5165,6 +5203,7 @@ var posProcess = function( selector, context ) {
    var match,
       tmpSet = [],
       later = "",
+      //为什么要拿[]包住?
       root = context.nodeType ? [context] : context;
 
    // Position selectors must be done after the filter

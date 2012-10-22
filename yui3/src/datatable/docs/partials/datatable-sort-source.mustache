@@ -1,0 +1,60 @@
+<div id="sort" class="yui3-skin-sam dt-example"></div>
+
+<div id="presorted" class="yui3-skin-sam dt-example"></div>
+
+<div id="dblclick" class="yui3-skin-sam dt-example"></div>
+
+<script type="text/javascript">
+YUI().use("datatable-sort", function (Y) {
+    var cols = [
+        {key:"Company", label:"Click to Sort Column A", sortable:true},
+        {key:"Phone", label:"Not Sortable Column B"},
+        {key:"Contact", label:"Click to Sort Column C", sortable:true}
+    ],
+    /*
+    dblclickCols = [
+        {key:"Company", label:"Dblclick to Sort A", sortable:true},
+        {key:"Phone", label:"Not Sortable Column B"},
+        {key:"Contact", label:"Dblclick to Sort C", sortable:true}
+    ],
+    */
+    data = [
+        {Company:"Company Bee", Phone:"415-555-1234", Contact:"Sally Spencer"},
+        {Company:"Acme Company", Phone:"650-555-4444", Contact:"John Jones"},
+        {Company:"Industrial Industries", Phone:"408-555-5678", Contact:"Robin Smith"}
+    ],
+    /*
+    presortedData = [
+        {Company:"Acme Company", Phone:"415-555-1234", Contact:"John Jones"},
+        {Company:"Company Bee", Phone:"650-555-4444", Contact:"Sally Spencer"},
+        {Company:"Industrial Industries", Phone:"408-555-5678", Contact:"Robin Smith"}
+    ],
+    */
+
+    dt1 = new Y.DataTable({
+        columns:cols,
+        data:data,
+        summary:"Contacts list",
+        caption:"Table with simple column sorting"
+    }).render("#sort");
+    
+    /*
+    dt2 = new Y.DataTable({
+        columns:cols,
+        data:presortedData,
+        sortBy: "Company",
+        summary:"Contacts list",
+        caption:"This table loads with presorted data"
+    }).render("#presorted"),
+
+    dt3 = new Y.DataTable({
+        columns:dblclickCols,
+        data:data,
+        summary:"Contacts list",
+        caption:"This table sorts on doubleclick"
+    }).render("#dblclick");
+    */
+
+});
+
+</script>

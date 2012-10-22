@@ -4017,7 +4017,7 @@
             return [];
          }
 
-         for(var i = 0, l = Expr.order.length; i < l; i++) {
+         for(var i = 0, l = Expr.order.length; i < l; i++) { //用来判断应该选用哪个查找器，对应的顺序是[ "ID", "NAME", "TAG" ];
             var match, type = Expr.order[i];
 
             if((match = Expr.leftMatch[type].exec(expr))) {
@@ -4028,6 +4028,7 @@
                   match[1] = (match[1] || "").replace(rBackslash, "");
                   set = Expr.find[type](match, context, isXML);
 
+                  //set是啥？
                   if(set != null) {
                      expr = expr.replace(Expr.match[type], "");
                      break;
@@ -4153,7 +4154,7 @@
             POS: /:(nth|eq|gt|lt|first|last|even|odd)(?:\((\d*)\))?(?=[^\-]|$)/,
             PSEUDO: /:((?:[\w\u00c0-\uFFFF\-]|\\.)+)(?:\((['"]?)((?:\([^\)]+\)|[^\(\)]*)+)\2\))?/
          },
-
+         //空值？
          leftMatch: {},
 
          attrMap: {

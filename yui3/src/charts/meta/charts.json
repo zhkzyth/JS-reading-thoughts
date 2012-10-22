@@ -1,0 +1,5 @@
+{
+    "charts": {
+        "requires":["charts-base"]
+    }
+}

@@ -1,0 +1,34 @@
+{
+    "attribute": {
+        "use": ["attribute-base", "attribute-complex"],
+        "submodules": {
+            "attribute-core": {
+                "requires" : [
+                    "oop"
+                ]
+            },
+            "attribute-extras": {
+                "requires" : [
+                    "oop"
+                ]
+            },
+            "attribute-events": {
+                "requires" : [
+                    "event-custom"
+                ]
+            },
+            "attribute-base": {
+                "requires": [
+                    "attribute-core",
+                    "attribute-events",
+                    "attribute-extras"
+                ]
+            },
+            "attribute-complex": {
+                "requires": [
+                    "attribute-base"
+                ]
+            }
+        }
+    }
+}
