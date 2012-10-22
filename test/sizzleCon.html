@@ -7,14 +7,21 @@
             width: 100px;
             background-color:blue;
          }
+         #local{
+            height:50px;
+            width: 50px;
+            background-color: red;
+         }
       </style>
    </head>
    <body>
-      <div id="test"></div>
+      <div id="test">
+         <div id="local"></div>
+      </div>
       <!-- test case -->
 
       <script type="text/javascript">
-      $('#test').find("div#test,a");
+      $('#test').find("div div a").hide();
       // $('#test').hide()
       // alert("asd")
       </script>

@@ -3828,6 +3828,8 @@ var chunker = /((?:\((?:\([^()]+\)|[^()]+)+\)|\[(?:\[[^\[\]]*\]|['"][^'"]*['"]|[
 
 //sizzle构造函数？
 var Sizzle = function( selector, context, results, seed ) {
+   // console.log(selector);
+   // alert("test")
    results = results || [];
    context = context || document;
 
@@ -4001,7 +4003,7 @@ Sizzle.matchesSelector = function( node, expr ) {
 };
 
 Sizzle.find = function( expr, context, isXML ) {
-   // console.log("");
+   alert("dasdasds")
    var set;
 
    if ( !expr ) {
@@ -4712,6 +4714,7 @@ try {
 
 var sortOrder, siblingCheck;
 
+//节点位置关系的实现
 if ( document.documentElement.compareDocumentPosition ) {
    sortOrder = function( a, b ) {
       if ( a === b ) {
@@ -4867,6 +4870,7 @@ Sizzle.getText = function( elems ) {
    root = form = null;
 })();
 
+//getElementsByTagName的实现
 (function(){
    // Check to see if the browser returns only elements
    // when doing getElementsByTagName("*")
@@ -4917,6 +4921,7 @@ Sizzle.getText = function( elems ) {
 })();
 
 //兼容旧版的sizzle，复制旧版的sizzle属性和方法
+//TODO 从这里继续分析
 if ( document.querySelectorAll ) {
    (function(){
       var oldSizzle = Sizzle,
@@ -5174,15 +5179,18 @@ function dirCheck( dir, cur, doneName, checkSet, nodeCheck, isXML ) {
    }
 }
 
+//IE的实现方法
 if ( document.documentElement.contains ) {
    //觉得实现上有点问题
    Sizzle.contains = function( a, b ) {
       return a !== b && (a.contains ? a.contains(b) : true);
    };
-
+//非IE的实现
 } else if ( document.documentElement.compareDocumentPosition ) {
+//TODO 有空参考下这里
+//blog.csdn.net/huajian2008/article/details/3960343
    Sizzle.contains = function( a, b ) {
-      return !!(a.compareDocumentPosition(b) & 16);
+      return !!(a.compareDocumentPosition(b) & 16);//?
    };
 
 } else {
@@ -5252,10 +5260,12 @@ var runtil = /Until$/,
 
 jQuery.fn.extend({
    find: function( selector ) {
+      // console.log(selector);
       var self = this,
          i, l;
 
       if ( typeof selector !== "string" ) {
+         //jQuery.filter()的调用都是传func进去?
          return jQuery( selector ).filter(function() {
             for ( i = 0, l = self.length; i < l; i++ ) {
                if ( jQuery.contains( self[ i ], this ) ) {
@@ -5269,8 +5279,11 @@ jQuery.fn.extend({
          length, n, r;
 
       for ( i = 0, l = this.length; i < l; i++ ) {
+         // console.log("i am in ");
          length = ret.length;
+         //调用JQ的静态方法去查找元素
          jQuery.find( selector, this[i], ret );
+
 
          if ( i > 0 ) {
             // Make sure that the results are unique
